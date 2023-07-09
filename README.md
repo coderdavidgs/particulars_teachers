@@ -1,7 +1,7 @@
 # Particulars Teachers
 
 <p align="center">
-  <img src="https://github.com/coderdavidgs" width="200">
+  <img src="https://github.com/coderdavidgs.png" width="200">
 </p>
 
 
