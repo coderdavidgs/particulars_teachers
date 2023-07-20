@@ -34,7 +34,7 @@ export default function useSearchTeacher(){
 
     function selectTeacher(teacher: teacher){
         sessionStorage.setItem('yourteacher', JSON.stringify(teacher));
-        Router.detailTeacher.push(router)
+        Router.detailTeacher.push(router, search)
 
     }
 

@@ -1,14 +1,15 @@
 import { PageTitleContainer, PageTitleStyled, PageSubTitleStyled } from "./styles";
+import { TypographyProps } from "@mui/material";
 
-export interface PageTitleProps {
+export interface PageTitleProps extends Omit<TypographyProps, 'title'>{
     title: string;
     subtitle?: string;
 }
 
-const PageTitle: React.FC<PageTitleProps> = ({ title, subtitle }) => {
+const PageTitle: React.FC<PageTitleProps> = ({ title, subtitle, color = 'primary'}) => {
     return(
         <PageTitleContainer>
-            <PageTitleStyled color={"primary"}>
+            <PageTitleStyled color={color}>
                 {title}
             </PageTitleStyled>
 
