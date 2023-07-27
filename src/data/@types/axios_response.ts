@@ -1,4 +1,4 @@
 export interface ResponseErrorInterface<T = unknown>{
-    errors: T;
+    errors?: T;
     message: string;
 }

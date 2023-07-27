@@ -23,7 +23,7 @@ export const Router = {
         }
     },
     registerTeacher: {
-        name: '/professor/register',
+        name: '/professor/registerTeacher',
         push: function(router: NextRouter){
             router.push({pathname: this.name })
         }
