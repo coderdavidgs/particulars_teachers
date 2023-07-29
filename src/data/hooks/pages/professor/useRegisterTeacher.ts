@@ -1,13 +1,14 @@
 import { ResponseErrorInterface } from "@data/@types/axios_response";
 import { LoginInterface, ResponseLoginInterface } from "@data/@types/login";
 import { TeacherErrorRegister, TeacherFormRegister, teacher } from "@data/@types/teacher";
+import { TeacherContext } from "@data/contexts/TeacherContext";
 import { ApiService } from "@data/services/ApiService";
 import { FormSchemaService } from "@data/services/FormSchemaService";
 import { getUser } from "@data/services/MeService";
 import { Router } from "@routes/routes";
 import { AxiosError, AxiosResponse } from "axios";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 export default function useRegisterTeacher(){
     const [valuesRegister, setValuesRegister] = useState({} as TeacherFormRegister);
@@ -15,6 +16,7 @@ export default function useRegisterTeacher(){
     const [loading, setLoading] = useState(false);
     const [snackMessage, setSnackMessage] = useState('');
     const router = useRouter();
+    const { TeacherDispatch, TeacherState} = useContext(TeacherContext);
 
     async function handleSubmit(){
         const formValidate = FormSchemaService.registerTeacher(valuesRegister);
@@ -48,7 +50,7 @@ export default function useRegisterTeacher(){
 
     async function handleGetUser(){
         await getUser()
-            .then(() => {})
+            .then(({ data }) => TeacherDispatch(data))
             .catch(({response}) => {
                 setSnackMessage(response?.data.message ?? 'Error')
             })
