@@ -10,9 +10,13 @@ export interface teacher{
         updated_at: string
 }
 
-export interface TeacherFormRegister extends Omit<teacher, 'id' | 'created_at' | 'updated_at'>{
+export interface TeacherFormRegister extends Omit<teacher, 'id' | 'created_at' | 'updated_at' | 'valor_hora'>{
         password: string,
-        password_confirmation: string
+        password_confirmation: string,
+        valor_hora: string | number
 }
 
-export interface TeacherErrorRegister extends TeacherFormRegister{}
+export interface TeacherErrorRegister extends Omit<TeacherFormRegister, 'idade' | 'valor_hora'>{
+        idade: string;
+        valor_hora: string;
+}

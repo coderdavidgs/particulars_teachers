@@ -1,15 +1,18 @@
 import PageTitle from "@components/data-display/PageTitle";
 import useRegisterTeacher from "@data/hooks/pages/professor/useRegisterTeacher";
-import { Box, Button, Card, TextField } from "@mui/material";
+import { Box, Button, Card, CircularProgress, Snackbar, TextField } from "@mui/material";
 import { BoxButtons } from "@styles/pages/teacher/registerTeacher.style";
+import CurrencyInputMask from "@components/inputs/CurrencyInputMask";
 
 export default function RegisterTeacherPage(){
     const {
-        valuesRegister, 
+        valuesRegister,
+        setSnackMessage, 
         messageError,
         snackMessage,
         setValuesRegister,
-        handleSubmit
+        handleSubmit,
+        loading
     } = useRegisterTeacher();
 
     return(
@@ -42,16 +45,18 @@ export default function RegisterTeacherPage(){
                         })}
                     />
 
-                    <TextField 
+                    <CurrencyInputMask 
                         label={'Price'}
                         sx={{my: 2}}
-                        type={"number"}
                         fullWidth
                         error={messageError?.valor_hora != undefined}
                         helperText={messageError?.valor_hora}
-                        onChange={({target: {value}}) => setValuesRegister((prevState) => {
-                            return {...prevState, valor_hora: Number(value)}
-                        })}
+                        onChange = {({ target: { value } }) => {
+                            setValuesRegister((prevState) => ({
+                                ...prevState,
+                                valor_hora: value,
+                            }));
+                        }}
                     />
 
                     <TextField 
@@ -111,10 +116,16 @@ export default function RegisterTeacherPage(){
 
                 <BoxButtons>
                     <Button variant={"contained"} fullWidth onClick={handleSubmit}>
-                        Register
+                        {!loading ? 'Register' : <CircularProgress color="primary" />}
                     </Button>
                 </BoxButtons>
             </Box>
+            <Snackbar 
+                open={snackMessage.length > 0}
+                message={snackMessage}
+                autoHideDuration={4000}
+                onClose={() => setSnackMessage('')}
+            />
         </>
     )
 }
