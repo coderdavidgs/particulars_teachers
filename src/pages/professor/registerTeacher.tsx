@@ -45,7 +45,7 @@ export default function RegisterTeacherPage(){
                         })}
                     />
 
-                    <CurrencyInputMask 
+                    <TextField 
                         label={'Price'}
                         sx={{my: 2}}
                         fullWidth

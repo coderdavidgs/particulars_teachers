@@ -2,9 +2,9 @@ export interface StudentInterface {
     nome: string;
     email: string;
     data_aula: string | Date;
-    id?: number;
+    id: number;
 }
 
-export interface StudentErrorResponseInterface extends StudentInterface {
+export interface StudentErrorResponseInterface extends Omit<StudentInterface, 'id'> {
 
 }
