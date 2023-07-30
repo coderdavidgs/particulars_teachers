@@ -6,6 +6,7 @@ import { BoxDrawer, ButtonStyle } from "./styles";
 import { useTheme } from "@mui/material";
 import { Router } from "@routes/routes";
 import { useRouter } from "next/router";
+import UserHeaderMenu from "@components/navigation/UserHeaderMenu";
 
 function LinkLogo(){
     return(
@@ -97,6 +98,7 @@ export default function Base({children}: PropsWithChildren){
                             <Link href="/">
                                 <LinkLogo />
                             </Link>
+                            <UserHeaderMenu />
                         </>
                     )}
 
