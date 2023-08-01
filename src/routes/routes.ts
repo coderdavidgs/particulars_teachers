@@ -8,25 +8,29 @@ export const Router = {
         name: '/',
         push: function(router: NextRouter){
             router.push({pathname: this.name})
-        }
+        },
+        icon: ''
     },
     searchTeacher: {
         name: '/searchTeacher',
         push: function(router: NextRouter, search?: string){
             router.push({pathname: this.name , query: {search}})
-        }
+        },
+        icon: ''
     },
     detailTeacher: {
         name: '/professor/detailTeacher',
-        push: function(router: NextRouter, search: string){
+        push: function(router: NextRouter, search?: string){
             router.push({pathname: this.name, query: {search} })
-        }
+        },
+        icon: ''
     },
     registerTeacher: {
         name: '/professor/registerTeacher',
         push: function(router: NextRouter){
             router.push({pathname: this.name })
-        }
+        },
+        icon: ''
     },
     listStudent: {
         name: '/professor/',
@@ -40,6 +44,7 @@ export const Router = {
         push: function(router: NextRouter){
             router.push({pathname: this.name })
         },
+        icon: ''
     }
 
 };
