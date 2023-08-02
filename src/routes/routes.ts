@@ -30,7 +30,7 @@ export const Router = {
         push: function(router: NextRouter){
             router.push({pathname: this.name })
         },
-        icon: ''
+        icon: 'app_registration'
     },
     listStudent: {
         name: '/professor/',

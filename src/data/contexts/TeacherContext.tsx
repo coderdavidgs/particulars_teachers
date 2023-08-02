@@ -1,5 +1,6 @@
 import { teacher } from "@data/@types/teacher";
-import { Dispatch, PropsWithChildren, SetStateAction, createContext, useState } from "react";
+import { getUser } from "@data/services/MeService";
+import { Dispatch, PropsWithChildren, SetStateAction, createContext, useEffect, useState } from "react";
 
 interface TeacherReducerInterface {
     TeacherState: teacher | undefined;
@@ -15,6 +16,13 @@ export const TeacherContext = createContext(initialValue);
 
 export const TeacherProvider: React.FC<PropsWithChildren> = ({children}) => {
     const [teacherContext, setTeacherContext] = useState<teacher>();
+
+    useEffect(() => {
+        getUser()
+        .then(({ data }) => {
+            setTeacherContext(data);
+        })
+    }, [])
 
     return (
         <TeacherContext.Provider value={{TeacherState: teacherContext, 
