@@ -29,10 +29,10 @@ export default function Base({children}: PropsWithChildren){
     async function handleLogout(){
         await ApiService.post('/api/auth/logout', { refresh_token: localStorage.getItem('refresh_token_yourteacher')}, {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token_yourteachers')}`
+                Authorization: `Bearer ${localStorage.getItem('token_yourteacher')}`
             } })
             .then(() => {
-                localStorage.removeItem('token_yourteachers');
+                localStorage.removeItem('token_yourteacher');
                 localStorage.removeItem('refresh_token_yourteacher');
                 TeacherDispatch(undefined);
                 Router.login.push(router);

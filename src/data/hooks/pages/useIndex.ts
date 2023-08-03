@@ -1,6 +1,7 @@
+import { getUser } from "@data/services/MeService";
 import { Router } from "@routes/routes";
 import { useRouter } from "next/router";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 
 export default function useIndex() {
@@ -17,6 +18,14 @@ export default function useIndex() {
         }
 
     }
+
+    useEffect(() => {
+        getUser()
+        .then(() => {
+            Router.listStudent.push(router);
+        })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return { setSearch, messageError, onSearchTeacher };
 }
