@@ -5,10 +5,11 @@ import { TeacherContext } from "@data/contexts/TeacherContext";
 import { ApiService } from "@data/services/ApiService";
 import { FormSchemaService } from "@data/services/FormSchemaService";
 import { getUser } from "@data/services/MeService";
+import { TextFormatService } from "@data/services/TextFormatService";
 import { Router } from "@routes/routes";
 import { AxiosError, AxiosResponse } from "axios";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 export default function useRegisterTeacher(){
     const [valuesRegister, setValuesRegister] = useState({} as TeacherFormRegister);
@@ -17,6 +18,29 @@ export default function useRegisterTeacher(){
     const [snackMessage, setSnackMessage] = useState('');
     const router = useRouter();
     const { TeacherDispatch, TeacherState} = useContext(TeacherContext);
+    const [openDialog, setOpenDialog] = useState(false);
+
+    useEffect(() => {
+        setValuesRegister({...TeacherState, valor_hora: TeacherState?.valor_hora} as TeacherFormRegister)
+    }, [TeacherState])
+
+    async function savePhoto(files: FileList){
+        const photo = { photo: files[0] };
+
+        ApiService.post('/api/professores/foto', photo, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${localStorage.getItem('token_yourteacher')}`
+            }
+        }).then(({ data }: AxiosResponse<{message: string}>) => {
+            setSnackMessage(data.message);
+            handleGetUser();
+        }).catch(({response}: AxiosError<{message: string}>) => {
+            if(response){
+                setSnackMessage(response!.data.message);
+            }
+        })
+    }
 
     async function handleSubmit(){
         const formValidate = FormSchemaService.registerTeacher(valuesRegister);
@@ -28,14 +52,31 @@ export default function useRegisterTeacher(){
 
             const data = {
                 ...valuesRegister,
-                valor_hora: Number((valuesRegister.valor_hora as string).replace('R$', '').replace(',', '.'))
+                //valor_hora: Number((valuesRegister.valor_hora as string).replace('R$', '').replace(',', '.'))
             } as TeacherFormRegister;
 
-            await ApiService.post('/api/professores', data)
+            delete data.foto_perfil;
+
+            const token = localStorage.getItem('token_yourteacher');
+
+            const typeHttp = token ? ApiService.put : ApiService.post;
+            const header = {};
+
+            await typeHttp('/api/professores', data, {
+                headers: token ? {
+                    Authorization: `Bearer ${token}`,
+                } : {},
+            })
             .then(async () => {
-                setSnackMessage('Register teacher successfully');
                 await handleLogin();
-                Router.listStudent.push(router)
+
+                if(!token){
+                    setSnackMessage('Register teacher successfully');
+                    Router.listStudent.push(router);
+                }
+
+                token && setSnackMessage('Updated Teacher');
+                
             })
             .catch(({response}: AxiosError<ResponseErrorInterface<TeacherErrorRegister>>) => {
                 if(response){
@@ -68,6 +109,28 @@ export default function useRegisterTeacher(){
         .finally(() => setLoading(false));
     }
 
+    async function deleteAccount() {
+        if(!loading){
+            setLoading(true)
+            ApiService.delete('/api/professores', {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token_yourteacher')}`
+                }
+            }).then(() => {
+                TeacherDispatch(undefined);
+                localStorage.removeItem('token_yourteacher');
+                localStorage.removeItem('refresh_token_yourteacher');
+                Router.home.push(router);
+            }).catch(({response}: AxiosError<{message: string}>) => {
+                if(response){
+                    setSnackMessage(response.data.message)
+                }
+            }).finally(() => {
+                setLoading(false);
+            })
+        }
+    }
+
     return{
         valuesRegister, 
         messageError,
@@ -75,6 +138,11 @@ export default function useRegisterTeacher(){
         setValuesRegister,
         handleSubmit,
         setSnackMessage,
-        loading
+        loading,
+        TeacherState,
+        savePhoto,
+        openDialog,
+        setOpenDialog,
+        deleteAccount
     }
 }

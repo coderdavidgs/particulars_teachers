@@ -13,7 +13,7 @@ export default function Dialog({isOpen = false, onClose, onCancel, onConfirm, ti
 
 
     return(
-        <MuiDialog open={true} onClose={() => {onClose}}>
+        <MuiDialog open={isOpen} onClose={onClose}>
             <DialogTitle color={'primary'} fontSize={'small'} textAlign={'center'}>
                 {title}
             </DialogTitle>

@@ -13,7 +13,7 @@ export const TextFormatService = {
         let price: number = +value!;
 
         if(isNaN(price)){
-            price = 0;
+            price = 100;
         }
 
         return CurrencyFormatter.format(price);

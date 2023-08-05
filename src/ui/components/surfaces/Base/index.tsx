@@ -103,7 +103,7 @@ function HeaderDesktop({ router, teacherState, onLogout }: HeaderDesktopProps) {
             <Box sx={{display: 'flex', alignItems: 'center'}}> 
                 {teacherState?.id ? (
                     <>
-                        <Link href="/teacher"  color={'inherit'} sx={{mx: 2}}>
+                        <Link href="/professor"  color={'inherit'} sx={{mx: 2}}>
                             Student List
                         </Link>
 
